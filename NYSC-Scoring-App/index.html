@@ -1242,25 +1242,22 @@ fetch("https://script.google.com/macros/s/AKfycbwi-_8i7joa4NpHtha4bmycV8ORV_Bo_x
 function loadNextMember() {
 
   document.getElementById("status").innerText =
-    "Calling server...";
+    "Loading candidate...";
 
-  fetch(
-    "https://script.google.com/macros/s/AKfycbwi-_8i7joa4NpHtha4bmycV8ORV_Bo_x4n6RU_3L0Oqe2eeROINHFJQyi7uKPXzfPs_Q/exec",
-    {
-      method: "POST",
-      body: JSON.stringify({
-        action: "getNextCandidateByPlatoon",
-        platoon: String(sessionStorage.getItem("platoon") || ""),
-        role: String(sessionStorage.getItem("role") || ""),
-        selectedState: String(sessionStorage.getItem("state") || "")
-      })
-    }
-  )
+  fetch("https://script.google.com/macros/s/AKfycbwi-_8i7joa4NpHtha4bmycV8ORV_Bo_x4n6RU_3L0Oqe2eeROINHFJQyi7uKPXzfPs_Q/exec", {
+    method: "POST",
+    body: JSON.stringify({
+      action: "getNextCandidateByPlatoon",
+      platoon: String(sessionStorage.getItem("platoon") || ""),
+      role: String(sessionStorage.getItem("role") || ""),
+      selectedState: String(sessionStorage.getItem("state") || "")
+    })
+  })
   .then(r => r.text())
   .then(function(txt){
 
     document.getElementById("status").innerText =
-      "SERVER RESPONSE: " + txt;
+      "SERVER SAID: " + txt;
 
     console.log(txt);
 
@@ -1268,24 +1265,13 @@ function loadNextMember() {
   .catch(function(err){
 
     document.getElementById("status").innerText =
-      "FETCH ERROR: " + err;
+      "ERROR: " + err;
 
     console.log(err);
 
   });
 
-}function calc(){
-
-  let total = 0;
-
-  for(let i=0;i<8;i++){
-    total += Number(document.getElementById("di_"+i).value || 0);
-    total += Number(document.getElementById("mow_"+i).value || 0);
-  }
-
-  document.getElementById("total").innerText = total;
 }
-
 function loadCommentsByRole(role){
   const select = document.getElementById("commentSelect");
   if(!select) return;
