@@ -923,54 +923,46 @@ return;
 }
 
 function proceedStateSave(state, stateText){
-
   console.log("SERVICE YEAR:",
-    sessionStorage.getItem("serviceYear"));
+  sessionStorage.getItem("serviceYear"));
 
-  console.log("BATCH STREAM:",
-    sessionStorage.getItem("batchStream"));
+console.log("BATCH STREAM:",
+  sessionStorage.getItem("batchStream"));
 
-  console.log("STATE:", state);
+console.log("STATE:", state);
 
-  console.log("STATE TEXT:", stateText);
+console.log("STATE TEXT:", stateText);
 
-  if (window._stateLocked) return;
+if (window._stateLocked) return;
 
-  window._stateLocked = true;
-
-  document.getElementById("stateStatus").innerText =
-    "Preparing scoring page...";
-
-  fetch("https://script.google.com/macros/s/AKfycbwi-_8i7joa4NpHtha4bmycV8ORV_Bo_x4n6RU_3L0Oqe2eeROINHFJQyi7uKPXzfPs_Q/exec", {
-    method: "POST",
-    body: JSON.stringify({
-      action: "saveOfficerState",
-      username: sessionStorage.getItem("username"),
-      state: state,
-      stateText: stateText
-    })
-  })
-  .then(r => r.json())
-  .then(function(res){
+window._stateLocked = true;
+document.getElementById("stateStatus").innerText =
+  "Preparing scoring page...";
+  google.script.run
+  .withSuccessHandler(function(res){
 
     console.log("saveOfficerState response:", res);
 
-    if (!res || !res.success) {
-
+    if(!res || !res.success){
       alert(res?.message || "Failed to save state");
-
       window._stateLocked = false;
-
       return;
     }
 
     sessionStorage.setItem("state", state);
     sessionStorage.setItem("stateText", stateText);
-
+// 🔥 FORCE SAVE TO SERVER IMMEDIATELY (DO NOT WAIT FOR LOGIN)
+google.script.run
+  .withSuccessHandler(function(res){
+    console.log("State metadata saved early:", res);
+  })
+  .saveOfficerState(
+    sessionStorage.getItem("username"),
+    state,
+    stateText
+  );
     document.getElementById("stateStatus").innerText = "";
-
     document.getElementById("stateBox").style.display = "none";
-
     document.getElementById("scoringBox").style.display = "block";
 
     buildTable();
@@ -980,7 +972,7 @@ function proceedStateSave(state, stateText){
     }, 300);
 
   })
-  .catch(function(err){
+  .withFailureHandler(function(err){
 
     console.log("saveOfficerState FAILED:", err);
 
@@ -988,9 +980,14 @@ function proceedStateSave(state, stateText){
 
     window._stateLocked = false;
 
-  });
+  })
+  .saveOfficerState(
+    sessionStorage.getItem("username"),
+    state,
+    stateText
+  );
+  }
 
-}
 function buildTable(){
 if (tableReady) {
   console.log("Table already built — skipping rebuild");
@@ -1099,6 +1096,7 @@ function getY(e){
   const touch = e.touches ? e.touches[0] : e;
   return (touch.clientY - rect.top);
 }
+
 /* ================= LOGIN ================= */
 function login() {
 const batchStream = document.getElementById("batchStream").value;
@@ -1144,85 +1142,76 @@ if (signature === blankSignature) {
 
   document.getElementById("loginStatus").innerText = "Logging in...";
 
-  fetch("https://script.google.com/macros/s/AKfycbwi-_8i7joa4NpHtha4bmycV8ORV_Bo_x4n6RU_3L0Oqe2eeROINHFJQyi7uKPXzfPs_Q/exec", {
-  method: "POST",
-  body: JSON.stringify({
-    action: "startSession",
-    officerName: officerName,
-    signature: signature,
-    username: username,
-    platoon: platoon,
-    year: document.getElementById("serviceYearSelect").value,
-    batchStream: document.getElementById("batchStream").value,
-    state: state,
-    loginUsername: username,
-    loginPlatoon: platoon,
-    loginOfficerName: officerName,
-    loginSignature: signature,
-    stateText: stateTextMap[state]
-  })
-})
-.then(r => r.json())
-.then(function(res){
+  google.script.run
+    .withSuccessHandler(function(res){
 
- if(!res || !res.success){
-  document.getElementById("loginStatus").innerText =
-    "LOGIN ERROR: " + (res?.message || "Login failed");
-  return;
+      if(!res || !res.success){
+        document.getElementById("loginStatus").innerText =
+          res?.message || "Login failed";
+        return;
+      }
+
+      sessionStorage.setItem("officerName", officerName);
+      sessionStorage.setItem("username", username);
+      sessionStorage.setItem("platoon", platoon);
+      sessionStorage.setItem("serviceYear", document.getElementById("serviceYearSelect").value);
+      sessionStorage.setItem("signature", signature);
+      loadCommentsByRole(res.role);
+      sessionStorage.setItem("role", (res.role || "").toLowerCase());
+
+document.getElementById("loginBox").style.display = "none";
+document.getElementById("scoringBox").style.display = "block";
+buildTable();
+setTimeout(buildTable, 100);
+
+const role = (res.role || "").toLowerCase();
+
+if(role.includes("drill")){
+  document.querySelectorAll("[id^='mow_']").forEach(x=>{
+    x.disabled = true;
+    x.style.background = "#eee";
+  });
 }
 
-  sessionStorage.setItem("officerName", officerName);
-  sessionStorage.setItem("username", username);
-  sessionStorage.setItem("platoon", platoon);
-  sessionStorage.setItem("serviceYear", document.getElementById("serviceYearSelect").value);
-  sessionStorage.setItem("signature", signature);
+if(role.includes("mow")){
+  document.querySelectorAll("[id^='di_']").forEach(x=>{
+    x.disabled = true;
+    x.style.background = "#eee";
+  });
+  
+}
 
-  loadCommentsByRole(res.role);
-  sessionStorage.setItem("role", (res.role || "").toLowerCase());
+loadNextMember();
+const submitBtn = document.querySelector("button[onclick='submitScore()']");
+submitBtn.disabled = false;
+submitBtn.style.background = "#0b6623";
+submitBtn.style.cursor = "pointer";
+submitBtn.style.opacity = "1";
 
-  document.getElementById("loginBox").style.display = "none";
-  document.getElementById("scoringBox").style.display = "block";
-
-  buildTable();
-  setTimeout(buildTable, 100);
-
-  const role = (res.role || "").toLowerCase();
-
-  if(role.includes("drill")){
-    document.querySelectorAll("[id^='mow_']").forEach(x=>{
-      x.disabled = true;
-      x.style.background = "#eee";
-    });
-  }
-
-  if(role.includes("mow")){
-    document.querySelectorAll("[id^='di_']").forEach(x=>{
-      x.disabled = true;
-      x.style.background = "#eee";
-    });
-  }
-
-  loadNextMember();
-
-  const submitBtn = document.querySelector("button[onclick='submitScore()']");
-  submitBtn.disabled = false;
-  submitBtn.style.background = "#0b6623";
-  submitBtn.style.cursor = "pointer";
-  submitBtn.style.opacity = "1";
-
-  setTimeout(function(){
-    applyRoleLock();
-  }, 300);
-
-})
-.catch(function(err){
-
-  document.getElementById("loginStatus").innerText =
-    "Login failed: " + err;
-
-  console.log(err);
-
-});
+// IMPORTANT: apply role lock again after login
+setTimeout(function(){
+  applyRoleLock();
+}, 300);
+    })
+    .withFailureHandler(function(err){
+      console.log(err);
+      document.getElementById("loginStatus").innerText =
+        "Server error. Check Apps Script deployment.";
+    })
+  .startSession(
+  officerName,
+  signature,
+  username,
+  platoon,
+  document.getElementById("serviceYearSelect").value,
+  document.getElementById("batchStream").value,
+  state,
+  username,
+  platoon,
+  officerName,
+  signature,
+  stateTextMap[state]
+);
 }
 function getState(){
   return sessionStorage.getItem("state");
@@ -1230,17 +1219,8 @@ function getState(){
 /* ================= GET MEMBER ================= */
 function loadNextMember() {
 
-  fetch("https://script.google.com/macros/s/AKfycbwi-_8i7joa4NpHtha4bmycV8ORV_Bo_x4n6RU_3L0Oqe2eeROINHFJQyi7uKPXzfPs_Q/exec", {
-    method: "POST",
-    body: JSON.stringify({
-      action: "getNextCandidateByPlatoon",
-      platoon: String(sessionStorage.getItem("platoon") || ""),
-      role: String(sessionStorage.getItem("role") || ""),
-      selectedState: String(sessionStorage.getItem("state") || "")
-    })
-  })
-  .then(r => r.json())
-  .then(res => {
+  google.script.run
+  .withSuccessHandler(function(res) {
 
     if (!res || res.noMore) {
       showNoMoreCandidates();
@@ -1250,22 +1230,22 @@ function loadNextMember() {
     loadMember(res);
 
   })
-  .catch(err => {
-
+  .withFailureHandler(function(err) {
     console.log(err);
-
     document.getElementById("status").innerText =
       "Failed to load candidate";
-
-  });
+  })
+  .getNextCandidateByPlatoon(
+  String(sessionStorage.getItem("platoon") || ""),
+  String(sessionStorage.getItem("role") || ""),
+  String(sessionStorage.getItem("state") || "")
+);
 }
+
 function getSessionRole() {
   return (sessionStorage.getItem("role") || "").toLowerCase();
 }
 
-function getRole() {
-  return getSessionRole();
-}
 function options(){
   return `
     <option value="">-- Select --</option>
@@ -1276,6 +1256,7 @@ function options(){
     <option value="10">10</option>
   `;
 }
+
 function calc(){
 
   let total = 0;
