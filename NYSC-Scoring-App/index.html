@@ -1241,64 +1241,30 @@ fetch("https://script.google.com/macros/s/AKfycbwi-_8i7joa4NpHtha4bmycV8ORV_Bo_x
 /* ================= GET MEMBER ================= */
 function loadNextMember() {
 
-  document.getElementById("status").innerText =
-    "Loading candidate...";
+alert("loadNextMember started");
 
-  fetch("https://script.google.com/macros/s/AKfycbwi-_8i7joa4NpHtha4bmycV8ORV_Bo_x4n6RU_3L0Oqe2eeROINHFJQyi7uKPXzfPs_Q/exec", {
-    method: "POST",
-    body: JSON.stringify({
-      action: "getNextCandidateByPlatoon",
-      platoon: String(sessionStorage.getItem("platoon") || ""),
-      role: String(sessionStorage.getItem("role") || ""),
-      selectedState: String(sessionStorage.getItem("state") || "")
-    })
+fetch("YOUR_WEBAPP_URL", {
+  method: "POST",
+  body: JSON.stringify({
+    action: "getNextCandidateByPlatoon",
+    platoon: String(sessionStorage.getItem("platoon") || ""),
+    role: String(sessionStorage.getItem("role") || ""),
+    selectedState: String(sessionStorage.getItem("state") || "")
   })
-  .then(r => r.text())
-  .then(function(txt){
+})
+.then(r => r.text())
+.then(function(res){
 
-    document.getElementById("status").innerText =
-      "SERVER SAID: " + txt;
+  alert("SERVER RESPONSE:\n\n" + res);
 
-    console.log(txt);
+})
+.catch(function(err){
 
-  })
-  .catch(function(err){
+  alert("FETCH ERROR:\n\n" + err);
 
-    document.getElementById("status").innerText =
-      "ERROR: " + err;
-
-    console.log(err);
-
-  });
+});
 
 }
-function loadCommentsByRole(role){
-  const select = document.getElementById("commentSelect");
-  if(!select) return;
-
-  select.innerHTML = "";
-
-  role = (role || getSessionRole() || "")
-    .toLowerCase()
-    .trim();
-
-  let list;
-
-  if (role.includes("mow") || role.includes("man")) {
-    list = MOW_COMMENTS;
-  } 
-  else {
-    list = DI_COMMENTS;
-  }
-
-  list.forEach(c => {
-    const option = document.createElement("option");
-    option.value = c;
-    option.textContent = c;
-    select.appendChild(option);
-  });
-}
-
 function getRole() {
   return getSessionRole();
 }
