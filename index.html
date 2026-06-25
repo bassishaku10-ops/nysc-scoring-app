@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+<html>
+<head>
+<base target="_top">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{
+  font-family:Arial;
+  margin:0;
+  padding:0;
+  background:#eef5ee;
+}
+
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:15px;
+}
+
+/* HEADER */
+.header{
+  background:#0b6623;
+  color:white;
+  padding:20px;
+  border-radius:12px;
+  text-align:center;
+  position:relative;
+}
+
+.header img{
+  width:70px;
+  height:70px;
+  object-fit:contain;
+  margin-bottom:10px;
+}
+
+.tag{
+  position:absolute;
+  top:10px;
+  right:12px;
+  font-size:12px;
+  background:rgba(255,255,255,0.15);
+  padding:4px 8px;
+  border-radius:6px;
+}
+
+/* LOGIN */
+#loginBox{
+  max-width:400px;
+  margin:60px auto;
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  border:1px solid #ddd;
+}
+
+input{
+  width:100%;
+  padding:10px;
+  margin:6px 0;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  background:#0b6623;
+  color:white;
+  border:none;
+  margin-top:10px;
+  cursor:pointer;
+}
+
+/* SCORING */
+.card{
+  margin-top:15px;
+  background:white;
+  padding:15px;
+  border-radius:10px;
+}
+
+.passport{
+  width:150px;
+  height:150px;
+  object-fit:cover;
+  border-radius:8px;
+  border:2px solid #0b6623;
+}
+
+.row{
+  display:flex;
+  gap:15px;
+  flex-wrap:wrap;
+}
+
+select{
+  width:100%;
+  padding:6px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th,td{
+  border:1px solid #ccc;
+  padding:8px;
+}
+
+th{background:#f2f2f2;}
+
+#loginBox .card{
+  max-width: 420px;
+  margin: 20px auto;
+  border-radius: 14px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+#loginBox label{
+  display:block;
+  margin-top:10px;
+  font-weight:bold;
+  color:#0b6623;
+  text-align:center;
+}
+
+#loginBox input,
+#loginBox select{
+  width:100%;
+  padding:10px;
+  margin-top:5px;
+  border:1px solid #ccc;
+  border-radius:10px;
+  outline:none;
+  text-align:center;
+}
+
+#loginBox input:focus,
+#loginBox select:focus{
+  border-color:#0b6623;
+  box-shadow:0 0 5px rgba(11,102,35,0.3);
+}
+
+#stateSelect:disabled{
+  background:#f0f0f0;
+  color:#666;
+  cursor:not-allowed;
+}
+
+#loginBox canvas{
+  border-radius:10px;
+  display:block;
+  margin:10px auto;
+}
+
+#loginBox button{
+  border-radius:10px;
+}
+button:hover {
+  opacity: 0.9;
+  transform: scale(1.01);
+}
+</style>
+</head>
+
+<body>
+<!-- ================= STATE SELECTION ================= -->
+<div class="container" id="stateBox" style="display:none;">
+
+  <div class="header" style="max-width:550px;margin:0 auto;">
+
+    <div class="tag">
+      NYSC FORM 2A<br>
+      State Selection
+    </div>
+
+    <img src="https://res.cloudinary.com/du5nls4et/image/upload/f_auto,q_auto/The_Logo_3_roezjv">
+
+    <h3>NATIONAL YOUTH SERVICE CORPS</h3>
+
+    <p>
+      PERFORMANCE REPORT ON CORPS MEMBER
+    </p>
+
+    <div><b>PART II</b></div>
+
+    <div>
+      Drill Instructor and Man 'O' War Instructor
+    </div>
+
+  </div>
+
+  <div class="card" style="
+  max-width:400px;
+  margin:15px auto;
+  border-radius:18px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+">
+
+    <h3 style="text-align:center;color:#0b6623;">
+  Service Year, Batch & Stream and State Orientation Camp Selection Pane
+</h3>
+
+    <details style="cursor:pointer;margin-top:10px;">
+
+  <summary style="
+    font-weight:bold;
+    color:#0b6623;
+    text-align:center;
+    font-size:15px;
+  ">
+    Service Year, Batch & Stream and State Selection Instructions (Click to Expand)
+  </summary>
+
+  <div style="
+    text-align:left;
+    font-size:13px;
+    line-height:1.6;
+    margin-top:10px;
+  ">
+
+    <ol style="
+      margin:0 0 0 18px;
+      padding:0;
+    ">
+      <li>Select the Service Year.</li>
+
+      <li>Select the appropriate Batch & Stream.</li>
+
+      <li>Select the State Orientation Camp from which you are scoring.</li>
+
+      <li>The selected information will determine the Corps Members available for assessment.</li>
+
+      <li>Ensure the Service Year, Batch & Stream and State are correct before proceeding.</li>
+
+    </ol>
+
+  </div>
+
+</details>
+
+<label style="font-weight:bold;color:#0b6623;">
+  Service Year
+</label>
+
+<select id="serviceYear" style="
+  width:100%;
+  padding:12px;
+  font-size:15px;
+  margin-top:10px;
+  border-radius:12px;
+  border:1px solid #ccc;
+">
+  <option value="">-- Select Service Year --</option>
+
+  <option value="2026">2026</option>
+  <option value="2027">2027</option>
+  <option value="2028">2028</option>
+  <option value="2029">2029</option>
+  <option value="2030">2030</option>
+  <option value="2031">2031</option>
+  <option value="2032">2032</option>
+  <option value="2033">2033</option>
+  <option value="2034">2034</option>
+  <option value="2035">2035</option>
+  <option value="2036">2036</option>
+  <option value="2037">2037</option>
+  <option value="2038">2038</option>
+  <option value="2039">2039</option>
+  <option value="2040">2040</option>
+
+</select>
+
+<label style="font-weight:bold;color:#0b6623;margin-top:10px;display:block;">
+  Batch & Stream
+</label>
+
+    <label style="font-weight:bold;color:#0b6623;">
+      State Orientation Camp
+    </label>
+
+   <select id="stateSelect" style="
+  width:100%;
+  padding:12px;
+  font-size:15px;
+  margin-top:10px;
+  border-radius:12px;
+  border:1px solid #ccc;
+  outline:none;
+">
+
+      <option value="">-- Select State --</option>
+
+      <option value="AB">ABIA</option>
+      <option value="AD">ADAMAWA</option>
+      <option value="AK">AKWA IBOM</option>
+      <option value="AN">ANAMBRA</option>
+      <option value="BA">BAUCHI</option>
+      <option value="BY">BAYELSA</option>
+      <option value="BN">BENUE</option>
+      <option value="BO">BORNO</option>
+      <option value="CR">CROSS RIVER</option>
+      <option value="DT">DELTA</option>
+      <option value="EB">EBONYI</option>
+      <option value="ED">EDO</option>
+      <option value="EK">EKITI</option>
+      <option value="EN">ENUGU</option>
+      <option value="FC">FCT ABUJA</option>
+      <option value="GM">GOMBE</option>
+      <option value="IM">IMO</option>
+      <option value="JG">JIGAWA</option>
+      <option value="KD">KADUNA</option>
+      <option value="KN">KANO</option>
+      <option value="KT">KATSINA</option>
+      <option value="KB">KEBBI</option>
+      <option value="KG">KOGI</option>
+      <option value="KW">KWARA</option>
+      <option value="LA">LAGOS</option>
+      <option value="NS">NASARAWA</option>
+      <option value="NG">NIGER</option>
+      <option value="OG">OGUN</option>
+      <option value="OD">ONDO</option>
+      <option value="OS">OSUN</option>
+      <option value="OY">OYO</option>
+      <option value="PL">PLATEAU</option>
+      <option value="RV">RIVERS</option>
+      <option value="SO">SOKOTO</option>
+      <option value="TR">TARABA</option>
+      <option value="YB">YOBE</option>
+      <option value="ZM">ZAMFARA</option>
+
+    </select>
+<div id="stateMessage" style="
+  display:none;
+  margin-top:10px;
+  padding:10px;
+  background:#fff3cd;
+  color:#856404;
+  border:1px solid #ffeeba;
+  border-radius:4px;
+  font-size:14px;
+"></div>
+    <button onclick="confirmState()" style="
+  width:100%;
+  padding:12px;
+  margin-top:12px;
+  background:#0b6623;
+  color:white;
+  border:none;
+  border-radius:14px;
+  cursor:pointer;
+  font-weight:bold;
+  transition:0.2s ease;
+">
+  CONTINUE TO SCORING PAGE
+</button>
+<p id="stateStatus"
+   style="
+     text-align:center;
+     color:#0b6623;
+     font-weight:bold;
+     margin-top:10px;
+   ">
+</p>
+  </div>
+
+</div>
+<!-- ================= LOGIN ================= -->
+<div class="container" id="loginBox">
+
+  <div class="header">
+
+    <div class="tag">
+      NYSC FORM 2A<br>Scoring Page Login
+    </div>
+
+    <img src="https://res.cloudinary.com/du5nls4et/image/upload/f_auto,q_auto/The_Logo_3_roezjv">
+
+    <h3>NATIONAL YOUTH SERVICE CORPS</h3>
+    <br>PERFORMANCE REPORT ON CORPS MEMBER</br>
+    (ORIENTATION COURSE)
+
+    <div><b>PART II</b></div>
+    <div>Drill and Man 'O' War Instructors Scoring Access Portal<br></div>
+    
+  </div>
+<div class="card" style="max-width:420px;margin:15px auto;">
+
+  <details style="cursor:pointer;">
+
+  <summary style="
+    font-weight:bold;
+    color:#0b6623;
+    text-align:center;
+    font-size:15px;
+  ">
+  
+    Login, Scoring Notes and Award of Marks Instructions (Click to Expand)
+  </summary>
+
+  <div style="
+    margin-top:10px;
+    font-size:13px;
+    line-height:1.6;
+    color:#333;
+    text-align:left;
+  ">
+
+    <!-- INSTRUCTIONS -->
+    <b>LOGIN INSTRUCTIONS</b><br>
+    • Enter your Officer details carefully before login.<br>
+    • Ensure your signature is properly drawn and clear.<br>
+    • Write your correct role before proceeding.<br>
+    • Only your assigned platoon members who have filled and submitted NYSC Form 2A will be available for scoring after      login.<br>
+    • Do not share login credentials or session access.<br>
+    • Ensure stable internet connection during scoring.<br>
+    • The next candidate will not be available for scoring without submitting the present scored candidate.<br>
+
+    <br>
+
+    <!-- NOTES -->
+    <b>SCORING NOTES</b><br>
+    1. There are 8 headings under which a Corps Member can be scored.<br>
+    2. Maximum score under headings 1–8 by each Scoring Officer is 10 while minimum is 2 and maximum total score by each Scoring Officer is 80 and minimum is 16.<br>
+    3. Scoring should be honest, objective and fair. It should be comparative and relative to the group.<br>
+   
+    <br>
+
+   <!-- AWARD OF MARKS -->
+<b>AWARD OF MARKS</b><br><br>
+
+<table style="
+  width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+">
+
+  <tr>
+    <td>Excellent</td>
+    <td style="text-align:right;">10</td>
+  </tr>
+
+  <tr>
+    <td>Very Good</td>
+    <td style="text-align:right;">8</td>
+  </tr>
+
+  <tr>
+    <td>Good</td>
+    <td style="text-align:right;">6</td>
+  </tr>
+
+  <tr>
+    <td>Fair</td>
+    <td style="text-align:right;">4</td>
+  </tr>
+
+  <tr>
+    <td>Poor</td>
+    <td style="text-align:right;">2</td>
+  </tr>
+
+</table>
+
+  </div>
+
+</details>
+
+</div>
+  <div class="card">
+
+    <h3 style="text-align:center;color:#0b6623;"> 
+      Scoring Officer Login
+    </h3>
+
+    <label><b>Officer Name</b></label>
+    <input id="officerName" placeholder="Enter Officer Name">
+
+   <label><b>Username</b></label>
+<input id="username" placeholder="e.g. drill1 or mow1">
+
+    <label><b>Platoon</b></label>
+    <input id="platoon" placeholder="Enter Platoon Number">
+
+<label><b>Orientation State</b></label>
+<select id="state">
+  <option value="">-- Select State --</option>
+  <option value="AB">ABIA</option>
+  <option value="AD">ADAMAWA</option>
+  <option value="AK">AKWA IBOM</option>
+  <option value="AN">ANAMBRA</option>
+  <option value="BA">BAUCHI</option>
+  <option value="BY">BAYELSA</option>
+  <option value="BN">BENUE</option>
+  <option value="BO">BORNO</option>
+  <option value="CR">CROSS RIVER</option>
+  <option value="DT">DELTA</option>
+  <option value="EB">EBONYI</option>
+  <option value="ED">EDO</option>
+  <option value="EK">EKITI</option>
+  <option value="EN">ENUGU</option>
+  <option value="FC">FCT</option>
+  <option value="GM">GOMBE</option>
+  <option value="IM">IMO</option>
+  <option value="JG">JIGAWA</option>
+  <option value="KD">KADUNA</option>
+  <option value="KN">KANO</option>
+  <option value="KT">KATSINA</option>
+  <option value="KB">KEBBI</option>
+  <option value="KG">KOGI</option>
+  <option value="KW">KWARA</option>
+  <option value="LA">LAGOS</option>
+  <option value="NS">NASARAWA</option>
+  <option value="NG">NIGER</option>
+  <option value="OG">OGUN</option>
+  <option value="OD">ONDO</option>
+  <option value="OS">OSUN</option>
+  <option value="OY">OYO</option>
+  <option value="PL">PLATEAU</option>
+  <option value="RV">RIVERS</option>
+  <option value="SO">SOKOTO</option>
+  <option value="TR">TARABA</option>
+  <option value="YB">YOBE</option>
+  <option value="ZM">ZAMFARA</option>
+</select>
+
+<label><b>Service Year</b></label>
+<select id="serviceYearSelect">
+  <option value="">-- Select Service Year --</option>
+</select>
+
+<label><b>Batch & Stream</b></label>
+<select id="batchStream">
+  <option value="">-- Select Batch & Stream --</option>
+
+  <option value="A-I">Batch 'A' Stream I</option>
+  <option value="A-II">Batch 'A' Stream II</option>
+
+  <option value="B-I">Batch 'B' Stream I</option>
+  <option value="B-II">Batch 'B' Stream II</option>
+
+  <option value="C-I">Batch 'C' Stream I</option>
+  <option value="C-II">Batch 'C' Stream II</option>
+
+</select>
+
+    <label><b>Signature</b></label>
+
+    <canvas
+  id="signaturePad"
+  style="border:1px solid #ccc; width:100%; height:120px; touch-action:none;">
+</canvas>
+
+    <button
+      type="button"
+      onclick="clearSignature()"
+      style="background:#888;">
+      CLEAR SIGNATURE
+    </button>
+
+    <button onclick="login()">
+      LOGIN
+    </button>
+
+    <p id="loginStatus"
+       style="text-align:center;color:red;">
+    </p>
+
+  </div>
+
+</div>
+
+<!-- ================= SCORING ================= -->
+<div class="container" id="scoringBox" style="display:none;">
+
+  <div class="header">
+
+    <div class="tag">NYSC FORM 2A<br>Scoring Page</div>
+
+    <img src="https://res.cloudinary.com/du5nls4et/image/upload/f_auto,q_auto/The_Logo_3_roezjv">
+
+    <h3>NATIONAL YOUTH SERVICE CORPS</h3>
+    <p>PERFORMANCE REPORT ON CORPS MEMBER</p>
+
+    <div><b>PART II</b></div>
+    <div>Corps Member Scoring Page</div>
+
+  </div>
+
+  <div id="status" style="text-align:center;font-weight:bold;color:#0b6623;">
+    Loading...
+  </div>
+
+  <!-- MEMBER CARD (FIXED STRUCTURE) -->
+  <div class="card" id="memberCard" style="display:none;">
+<div id="selectedStateDisplay"
+  style="
+    text-align:center;
+    font-weight:bold;
+    color:white;
+    background:#0b6623;
+    padding:6px 10px;
+    border-radius:6px;
+    margin-bottom:10px;
+  ">
+</div>
+    
+
+    <h3 style="text-align:center;color:#0b6623;">
+      Corps Member Details
+    </h3>
+
+    <div class="row">
+
+      <img id="cm_passport" class="passport">
+
+      <div>
+        <p><b>Full Name:</b> <span id="cm_name"></span></p>
+        <p><b>State Code No.:</b> <span id="cm_code"></span></p>
+        <p><b>Call-Up No.:</b> <span id="cm_callup"></span></p>
+        <p><b>Phone No.:</b> <span id="cm_phone"></span></p>
+        <p><b>Gender:</b> <span id="cm_gender"></span></p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- NO MORE SCREEN (OUTSIDE CARD — FIXED) -->
+  <div id="noMoreScreen" style="
+    display:none;
+    text-align:center;
+    padding:40px 20px;
+  ">
+    <h2 style="color:#0b6623;">Scoring Completed</h2>
+
+    <p style="font-size:16px;color:#555;margin-top:10px;">
+      No more candidates are available for scoring.
+    </p>
+
+    <p style="font-size:14px;color:#777;">
+      You may safely log out or return later.
+    </p>
+  </div>
+
+  <!-- SCORING GUIDE -->
+  <div class="card">
+
+    <details style="cursor:pointer;">
+      <summary style="
+        font-weight:bold;
+        color:#0b6623;
+        font-size:15px;
+        text-align:center;
+      ">
+        Scoring Explanation Guide (Click to Expand)
+      </summary>
+
+      <div style="margin-top:10px;font-size:13px;line-height:1.6;color:#333;text-align:left;">
+
+        <b>1. Appearance & Bearing During the Following:</b><br>
+        (a) Parades and Paramilitary Training<br>
+        (b) Physical Training<br>
+        (c) In Camp generally<br><br>
+
+        <b>2. Punctuality & Regularity at:</b><br>
+        (a) Parades and Paramilitary Training<br>
+        (b) Physical Training<br>
+        (c) Man 'O' War Activities<br>
+        (d) Sports and Games<br>
+        (e) Language Study<br>
+        (f) Other Lectures<br>
+        (g) Kitchen Activities<br><br>
+
+        <b>3. Sense of Duty</b><br>
+        (a) Service before other interests<br><br>
+
+        <b>4. Initiative & Resourcefulness</b><br>
+        (a) Anticipation of Problems and Solutions<br>
+        (b) Original Ideas<br><br>
+
+        <b>5. Team Work</b><br>
+        (a) Influence on colleagues<br><br>
+
+        <b>6. Command & Leadership</b><br>
+        (a) Organizing and Planning Ability<br><br>
+
+        <b>7. Discipline</b><br>
+        (a) Self-Control<br>
+        (b) Ability to cope under stress<br>
+        (c) Self-Confidence<br><br>
+
+        <b>8. Special Contribution</b><br>
+        (e.g. Cooking, Games, Social Activities, Man 'O' War Activities)
+
+      </div>
+    </details>
+
+  </div>
+
+  <!-- SCORE TABLE -->
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>Parameter</th>
+          <th id="diHeader">Drill Instructor</th>
+          <th id="mowHeader">Man 'O' War Instructor</th>
+        </tr>
+      </thead>
+      <tbody id="scoreBody"></tbody>
+    </table>
+
+    <p>Total: <span id="total">0</span></p>
+
+    <div class="card">
+
+      <details style="cursor:pointer;">
+        <summary style="
+          font-weight:bold;
+          color:#0b6623;
+          font-size:15px;
+          text-align:center;
+        ">
+          Officer Comment Section (Click to Expand)
+        </summary>
+
+        <div style="margin-top:10px;">
+          <label style="font-weight:bold;color:#0b6623;">
+            Select Comment
+          </label>
+
+          <select id="commentSelect" style="width:100%;padding:10px;margin-top:8px;"></select>
+        </div>
+      </details>
+
+    </div>
+
+    <div id="submitStatus"
+      style="margin-top:10px;text-align:center;font-weight:bold;color:red;">
+    </div>
+
+    <button onclick="submitScore()">SUBMIT</button>
+
+  </div>
+
+</div>
+<script>
+ const stateTextMap = {
+  AB: "ABIA",
+  AD: "ADAMAWA",
+  AK: "AKWA IBOM",
+  AN: "ANAMBRA",
+  BA: "BAUCHI",
+  BY: "BAYELSA",
+  BN: "BENUE",
+  BO: "BORNO",
+  CR: "CROSS RIVER",
+  DT: "DELTA",
+  EB: "EBONYI",
+  ED: "EDO",
+  EK: "EKITI",
+  EN: "ENUGU",
+  FC: "FCT ABUJA",
+  GM: "GOMBE",
+  IM: "IMO",
+  JG: "JIGAWA",
+  KD: "KADUNA",
+  KN: "KANO",
+  KT: "KATSINA",
+  KB: "KEBBI",
+  KG: "KOGI",
+  KW: "KWARA",
+  LA: "LAGOS",
+  NS: "NASARAWA",
+  NG: "NIGER",
+  OG: "OGUN",
+  OD: "ONDO",
+  OS: "OSUN",
+  OY: "OYO",
+  PL: "PLATEAU",
+  RV: "RIVERS",
+  SO: "SOKOTO",
+  TR: "TARABA",
+  YB: "YOBE",
+  ZM: "ZAMFARA"
+};
+  const categories = [
+  "Appearance & Bearing",
+  "Punctuality & Regularity",
+  "Sense of Duty",
+  "Initiative & Resourcefulness",
+  "Team Work",
+  "Command & Leadership",
+  "Discipline",
+  "Special Contribution"
+];
+  const APP_STATE = {
+  LOGIN: "login",
+  STATE: "state",
+  SCORING: "scoring"
+};
+
+let currentState = APP_STATE.LOGIN;
+  let tableReady = false;
+  
+function showStateSelector(){
+  document.getElementById("loginBox").style.display = "none";
+  document.getElementById("stateBox").style.display = "block";
+}
+
+function confirmState(){
+  document.getElementById("stateStatus").innerText =
+  "Loading candidates, please wait...";
+  window._stateLoadingTimeout = setTimeout(() => {
+  document.getElementById("stateStatus").innerText =
+    "System is taking too long. Please retry.";
+
+  window._stateLocked = false;
+}, 10000);
+const msg = document.getElementById("stateMessage");
+
+if(msg){
+  msg.style.display = "none";
+  msg.innerText = "";
+}
+const username = sessionStorage.getItem("username");
+
+const serviceYearEl = document.getElementById("serviceYear");
+const batchStreamEl = document.getElementById("batchStream");
+
+const serviceYear = serviceYearEl ? serviceYearEl.value : "";
+const batchStream = batchStreamEl ? batchStreamEl.value : "";
+// store only if they exist
+if (serviceYearEl) {
+  sessionStorage.setItem("serviceYear", serviceYear);
+}
+
+if (batchStreamEl) {
+  sessionStorage.setItem("batchStream", batchStream);
+}
+
+// validation (safe)
+if (!serviceYear || !batchStream) {
+  document.getElementById("stateStatus").innerText =
+    "Please select Service Year and Batch & Stream";
+  return;
+}
+const selectedState = document.getElementById("stateSelect").value;
+const selectedStateText =
+  document.getElementById("stateSelect")
+    .options[document.getElementById("stateSelect").selectedIndex].text;
+    
+  const state = document.getElementById("stateSelect").value;
+const stateText = document.getElementById("stateSelect")
+  .options[document.getElementById("stateSelect").selectedIndex].text;
+
+sessionStorage.setItem("stateText", stateText);
+window.selectedState = state;
+const displayState = stateText.toUpperCase();
+displayState = safeStateText(displayState);
+const isFCT =
+  displayState.includes("FCT");
+
+document.getElementById("selectedStateDisplay").innerText =
+  isFCT
+    ? "NYSC FCT ABUJA"
+    : "NYSC " + displayState + " STATE";
+  if(!state){
+  document.getElementById("stateStatus").innerText =
+    "Please select a state";
+  return;
+}
+ let stateTimeout = setTimeout(() => {
+  document.getElementById("stateStatus").innerText =
+    "Server not responding. Please try again.";
+  window._stateLocked = false;
+}, 8000);
+
+google.script.run
+  .withSuccessHandler(function(lock){
+clearTimeout(window._stateLoadingTimeout);
+    clearTimeout(stateTimeout);
+
+    console.log("getOfficerState returned:", lock);
+
+    // existing logic (UNCHANGED)
+    if(lock && lock.state && lock.state !== state){
+
+      const msg = document.getElementById("stateMessage");
+
+      if(msg){
+        msg.style.display = "block";
+        msg.innerText =
+          "You are already logged in as " +
+          (lock.stateText || lock.state) +
+          " State. Kindly select the correct State of your Orientation Camp.";
+      }
+
+      window._stateLocked = false;
+      return;
+    }
+
+    proceedStateSave(state, stateText);
+
+  })
+  .withFailureHandler(function(err){
+clearTimeout(window._stateLoadingTimeout);
+    clearTimeout(stateTimeout);
+
+    console.log("getOfficerState FAILED:", err);
+
+    document.getElementById("stateStatus").innerText =
+      "Error loading session. Try again.";
+
+    window._stateLocked = false;
+
+  })
+  .getOfficerState(username);
+
+return;
+}
+
+function proceedStateSave(state, stateText){
+  console.log("SERVICE YEAR:",
+  sessionStorage.getItem("serviceYear"));
+
+console.log("BATCH STREAM:",
+  sessionStorage.getItem("batchStream"));
+
+console.log("STATE:", state);
+
+console.log("STATE TEXT:", stateText);
+
+if (window._stateLocked) return;
+
+window._stateLocked = true;
+document.getElementById("stateStatus").innerText =
+  "Preparing scoring page...";
+  google.script.run
+  .withSuccessHandler(function(res){
+
+    console.log("saveOfficerState response:", res);
+
+    if(!res || !res.success){
+      alert(res?.message || "Failed to save state");
+      window._stateLocked = false;
+      return;
+    }
+
+    sessionStorage.setItem("state", state);
+    sessionStorage.setItem("stateText", stateText);
+// 🔥 FORCE SAVE TO SERVER IMMEDIATELY (DO NOT WAIT FOR LOGIN)
+google.script.run
+  .withSuccessHandler(function(res){
+    console.log("State metadata saved early:", res);
+  })
+  .saveOfficerState(
+    sessionStorage.getItem("username"),
+    state,
+    stateText
+  );
+    document.getElementById("stateStatus").innerText = "";
+    document.getElementById("stateBox").style.display = "none";
+    document.getElementById("scoringBox").style.display = "block";
+
+    buildTable();
+
+    setTimeout(() => {
+      loadNextMember();
+    }, 300);
+
+  })
+  .withFailureHandler(function(err){
+
+    console.log("saveOfficerState FAILED:", err);
+
+    alert("Server error saving state. Check backend.");
+
+    window._stateLocked = false;
+
+  })
+  .saveOfficerState(
+    sessionStorage.getItem("username"),
+    state,
+    stateText
+  );
+  }
+
+function buildTable(){
+if (tableReady) {
+  console.log("Table already built — skipping rebuild");
+  return;
+}
+  let html = "";
+
+  categories.forEach((c,i)=>{
+    html += `
+      <tr>
+        <td>${c}</td>
+        <td><select id="di_${i}" onchange="calc()">${options()}</select></td>
+        <td><select id="mow_${i}" onchange="calc()">${options()}</select></td>
+      </tr>
+    `;
+  });
+
+  document.getElementById("scoreBody").innerHTML = html;
+
+  tableReady = true;
+
+  setTimeout(applyRoleLock, 50);
+
+  
+}
+
+let stateCode = "";
+let role = "";
+
+let isDrawing = false;
+const canvas = document.getElementById("signaturePad");
+const ctx = canvas.getContext("2d");
+
+function resizeCanvas() {
+  const ratio = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+
+  canvas.width = rect.width * ratio;
+  canvas.height = rect.height * ratio;
+
+  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+}
+
+window.addEventListener("load", resizeCanvas);
+window.addEventListener("resize", resizeCanvas);
+canvas.addEventListener("touchstart", function(e){
+  e.preventDefault();
+}, { passive: false });
+
+canvas.addEventListener("touchmove", function(e){
+  e.preventDefault();
+}, { passive: false });
+const DI_COMMENTS = [
+  "--Select Comment--",
+  "Demonstrates excellent discipline, punctuality and adherence to drill instructions. A model Corps Member in parade and training conduct.",
+  "Shows strong understanding of drill routines and commands. Participates actively and maintains a commendable level of discipline.",
+  "Generally well-behaved with satisfactory attendance. Minor inconsistencies observed in parade alignment and responsiveness.",
+  "Performance is average. Requires improvement in attention to instruction, punctuality and parade coordination.",
+  "Shows irregular attendance and weak engagement in drill activities. Needs strict supervision and corrective guidance.",
+  "Displays poor discipline and low participation in drill sessions. Fails to meet expected standards of military-style conduct."
+];
+
+const MOW_COMMENTS = [
+  "--Select Comment--",
+  "Exhibits excellent teamwork, physical fitness and responsiveness during Man 'O' War activities. Highly reliable in field activities.",
+  "Shows strong participation and good understanding of paramilitary tasks. Works well within teams and follows instructions effectively.",
+  "Demonstrates satisfactory engagement in Man 'O' War drills with occasional lapses in coordination and endurance.",
+  "Average performance in field exercises. Needs improvement in stamina, alertness and task execution under pressure.",
+  "Participation is inconsistent. Shows limited enthusiasm and requires motivation to engage fully in activities.",
+  "Displays poor involvement in Man 'O' War activities. Lacks discipline, responsiveness and teamwork orientation."
+];
+canvas.addEventListener("mousedown", startDraw);
+canvas.addEventListener("mouseup", stopDraw);
+canvas.addEventListener("mousemove", draw);
+
+canvas.addEventListener("touchstart", startDraw);
+canvas.addEventListener("touchend", stopDraw);
+canvas.addEventListener("touchmove", draw);
+
+function startDraw(e){
+  isDrawing = true;
+  ctx.beginPath();
+  ctx.moveTo(getX(e), getY(e));
+}
+
+function stopDraw(){
+  isDrawing = false;
+}
+
+function draw(e){
+  if(!isDrawing) return;
+  ctx.lineWidth = 2;
+  ctx.lineCap = "round";
+  ctx.lineTo(getX(e), getY(e));
+  ctx.stroke();
+}
+
+function getX(e){
+  const rect = canvas.getBoundingClientRect();
+  const touch = e.touches ? e.touches[0] : e;
+  return (touch.clientX - rect.left);
+}
+
+function getY(e){
+  const rect = canvas.getBoundingClientRect();
+  const touch = e.touches ? e.touches[0] : e;
+  return (touch.clientY - rect.top);
+}
+
+/* ================= LOGIN ================= */
+function login() {
+const batchStream = document.getElementById("batchStream").value;
+
+if (!batchStream) {
+  document.getElementById("loginStatus").innerText =
+    "Please select Batch & Stream";
+  return;
+}
+
+sessionStorage.setItem("batchStream", batchStream);
+  const officerName = document.getElementById("officerName").value;
+  const username = document.getElementById("username").value;
+  const platoon = document.getElementById("platoon").value;
+
+const state = document.getElementById("state").value.trim();
+sessionStorage.setItem("state", state);
+
+  const signature = canvas.toDataURL("image/png");
+
+// check if canvas is actually empty
+const blankTest = document.createElement("canvas");
+blankTest.width = canvas.width;
+blankTest.height = canvas.height;
+
+const blankSignature = blankTest.toDataURL("image/png");
+
+if (signature === blankSignature) {
+  document.getElementById("loginStatus").innerText =
+    "Please provide your signature before login.";
+  return;
+}
+
+  const blankCanvas = document.createElement("canvas");
+  blankCanvas.width = 300;
+  blankCanvas.height = 120;
+
+  if(signature === blankCanvas.toDataURL()){
+    document.getElementById("loginStatus").innerText =
+      "Please complete all Fields before Login.";
+    return;
+  }
+
+  document.getElementById("loginStatus").innerText = "Logging in...";
+
+  fetch("https://script.google.com/macros/s/AKfycbwi-_8i7joa4NpHtha4bmycV8ORV_Bo_x4n6RU_3L0Oqe2eeROINHFJQyi7uKPXzfPs_Q/exec", {
+  method: "POST",
+  body: JSON.stringify({
+    action: "startSession",
+    officerName: officerName,
+    signature: signature,
+    username: username,
+    platoon: platoon,
+    year: document.getElementById("serviceYearSelect").value,
+    batchStream: document.getElementById("batchStream").value,
+    state: state,
+    loginUsername: username,
+    loginPlatoon: platoon,
+    loginOfficerName: officerName,
+    loginSignature: signature,
+    stateText: stateTextMap[state]
+  })
+})
+.then(r => r.json())
+.then(function(res){
+
+ if(!res || !res.success){
+  document.getElementById("loginStatus").innerText =
+    "LOGIN ERROR: " + (res?.message || "Login failed");
+  return;
+}
+
+  sessionStorage.setItem("officerName", officerName);
+  sessionStorage.setItem("username", username);
+  sessionStorage.setItem("platoon", platoon);
+  sessionStorage.setItem("serviceYear", document.getElementById("serviceYearSelect").value);
+  sessionStorage.setItem("signature", signature);
+
+  loadCommentsByRole(res.role);
+  sessionStorage.setItem("role", (res.role || "").toLowerCase());
+
+  document.getElementById("loginBox").style.display = "none";
+  document.getElementById("scoringBox").style.display = "block";
+
+  buildTable();
+  setTimeout(buildTable, 100);
+
+  const role = (res.role || "").toLowerCase();
+
+  if(role.includes("drill")){
+    document.querySelectorAll("[id^='mow_']").forEach(x=>{
+      x.disabled = true;
+      x.style.background = "#eee";
+    });
+  }
+
+  if(role.includes("mow")){
+    document.querySelectorAll("[id^='di_']").forEach(x=>{
+      x.disabled = true;
+      x.style.background = "#eee";
+    });
+  }
+
+  loadNextMember();
+
+  const submitBtn = document.querySelector("button[onclick='submitScore()']");
+  submitBtn.disabled = false;
+  submitBtn.style.background = "#0b6623";
+  submitBtn.style.cursor = "pointer";
+  submitBtn.style.opacity = "1";
+
+  setTimeout(function(){
+    applyRoleLock();
+  }, 300);
+
+})
+.catch(function(err){
+
+  document.getElementById("loginStatus").innerText =
+    "Login failed";
+
+  console.log(err);
+
+});
+}
+function getState(){
+  return sessionStorage.getItem("state");
+}
+/* ================= GET MEMBER ================= */
+function loadNextMember() {
+
+  fetch("https://script.google.com/macros/s/AKfycbwi-_8i7joa4NpHtha4bmycV8ORV_Bo_x4n6RU_3L0Oqe2eeROINHFJQyi7uKPXzfPs_Q/exec", {
+    method: "POST",
+    body: JSON.stringify({
+      action: "getNextCandidateByPlatoon",
+      platoon: String(sessionStorage.getItem("platoon") || ""),
+      role: String(sessionStorage.getItem("role") || ""),
+      selectedState: String(sessionStorage.getItem("state") || "")
+    })
+  })
+  .then(r => r.json())
+  .then(res => {
+
+    if (!res || res.noMore) {
+      showNoMoreCandidates();
+      return;
+    }
+
+    loadMember(res);
+
+  })
+  .catch(err => {
+
+    console.log(err);
+
+    document.getElementById("status").innerText =
+      "Failed to load candidate";
+
+  });
+}
+function getRole() {
+  return getSessionRole();
+}
+
+function submitScore() {
+  const role = getSessionRole() || "";
+  console.log("STEP 1: submitScore started");
+  if (!tableReady) {
+  document.getElementById("submitStatus").innerText =
+    "Please wait for scoring table to load fully.";
+  return;
+}
+  if (document.querySelector("button[onclick='submitScore()']").disabled) {
+  return;
+}
+const di0 = document.getElementById("di_0");
+if (!di0) {
+  document.getElementById("submitStatus").innerText =
+    "Table not ready. Please wait...";
+  return;
+}
+console.log("ROLE RAW:", getSessionRole());
+console.log("ROLE CLEAN:", role);
+  const stateCode = window.stateCode;
+  const comment = document.getElementById("commentSelect").value;
+
+  let di = [];
+let mow = [];
+let hasValue = false;
+
+for (let i = 0; i < 8; i++) {
+
+  const diEl = document.getElementById("di_" + i);
+  const mowEl = document.getElementById("mow_" + i);
+
+  if (!diEl || !mowEl) {
+    document.getElementById("submitStatus").innerText =
+      "Table missing. Reload page.";
+    return;
+  }
+
+  if (!diEl.disabled && diEl.value !== "") hasValue = true;
+  if (!mowEl.disabled && mowEl.value !== "") hasValue = true;
+
+  di.push(Number(diEl.value || 0));
+  mow.push(Number(mowEl.value || 0));
+}
+  // =========================
+  // COMMENT VALIDATION
+  // =========================
+
+  if (!comment || comment === "--Select Comment--") {
+    document.getElementById("submitStatus").innerText =
+      "Complete all fields before you can submit";
+    document.getElementById("submitStatus").style.color = "red";
+    return;
+  }
+
+  const totalDI = di.reduce((a, b) => a + b, 0);
+  const totalMOW = mow.reduce((a, b) => a + b, 0);
+  const grandTotal = totalDI + totalMOW;
+  const finalAvg = grandTotal / 16;
+console.log("STEP 3: building payload");
+  const payload = {
+  stateCode,
+  di,
+  mow,
+  totalDI,
+  totalMOW,
+  grandTotal,
+  finalAvg,
+  comment,
+  role,
+
+  serviceYear: window.serviceYear,
+  batchStream: window.batchStream
+};
+
+  document.getElementById("submitStatus").innerText =
+  "Submitting scores...";
+document.getElementById("submitStatus").style.color = "#0b6623";
+console.log("STEP 4: sending to Apps Script");
+  google.script.run
+    .withSuccessHandler(function(res) {
+
+      if (!res || !res.success) {
+        document.getElementById("status").innerText =
+          res?.message || "Save failed";
+        return;
+      }
+
+      if (!res || res.noMore) {
+  document.getElementById("submitStatus").innerText = "";
+  return;
+}
+
+document.getElementById("submitStatus").innerText =
+  "Scores submitted successfully.";
+
+      document.getElementById("status").style.display = "block";
+document.getElementById("status").innerText =
+  "Loading next candidate for scoring...";
+
+      setTimeout(function () {
+
+        for (let i = 0; i < 8; i++) {
+
+          const diEl = document.getElementById("di_" + i);
+          const mowEl = document.getElementById("mow_" + i);
+
+          if (diEl) diEl.value = "";
+          if (mowEl) mowEl.value = "";
+        }
+
+        document.getElementById("total").innerText = "0";
+        const commentBox = document.getElementById("commentSelect");
+if (commentBox) {
+  commentBox.selectedIndex = 0;
+}
+        loadNextMember();
+
+     }, 1000);
+
+    })
+    .withFailureHandler(function(err) {
+
+      console.log(err);
+
+      document.getElementById("status").innerText =
+        "Server error while saving score";
+
+    })
+    .saveSimpleScore(payload);
+}
+function showNoMoreCandidates() {
+
+  document.getElementById("status").innerHTML = `
+    <div style="
+      text-align:center;
+      padding:40px;
+    ">
+      <h2 style="color:#0b6623;">
+        Scoring Completed
+      </h2>
+
+      <p>
+        No more candidates are available for scoring.
+      </p>
+    </div>
+  `;
+
+  const memberCard = document.getElementById("memberCard");
+  if (memberCard) memberCard.style.display = "none";
+
+  const cards = document.querySelectorAll("#scoringBox .card");
+  cards.forEach(card => {
+    if (card.id !== "memberCard") {
+      card.style.display = "none";
+    }
+  });
+}
+function clearSignature() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function getPassportUrl(raw) {
+  raw = (raw || "").toString().trim();
+
+  // extract file ID if full link
+  const match = raw.match(/[-\w]{25,}/);
+  const fileId = match ? match[0] : raw;
+
+  if (!fileId) {
+    return "https://via.placeholder.com/150";
+  }
+
+  return "https://drive.google.com/thumbnail?id=" + fileId + "&sz=w400";
+}
+
+function loadMember(data){
+  if (data.batchStream) {
+  window.batchStream = data.batchStream;
+  sessionStorage.setItem("batchStream", data.batchStream);
+}
+
+if (data.serviceYear) {
+  window.serviceYear = data.serviceYear;
+  sessionStorage.setItem("serviceYear", data.serviceYear);
+}
+  console.log("memberCard element:", document.getElementById("memberCard"));
+  document.getElementById("memberCard").classList.add("card");
+const card = document.getElementById("memberCard");
+if (card) card.style.display = "block";
+
+/* SHOW STATE BOX TEXT HERE */
+const box = document.getElementById("selectedStateDisplay");
+
+if (box) {
+
+  const stateCode =
+    sessionStorage.getItem("state") ||
+    data.state ||
+    "";
+
+  const displayState =
+    sessionStorage.getItem("stateText") ||
+    safeStateText(stateCode);
+
+  box.innerText =
+    displayState.toUpperCase() === "FCT ABUJA"
+      ? "NYSC FCT ABUJA"
+      : "NYSC " + displayState.toUpperCase();
+}
+loadCommentsByRole(getSessionRole());
+const status = document.getElementById("status");
+
+status.innerText = "Candidate ready for scoring";
+
+setTimeout(() => {
+  status.style.display = "none";
+}, 2000);
+  try {
+
+    document.getElementById("cm_name").innerText =
+      data.fullName || "";
+
+    document.getElementById("cm_code").innerText =
+      data.stateCode || "";
+window.stateCode = data.stateCode || "";
+    document.getElementById("cm_callup").innerText =
+      data.callUp || "";
+
+    document.getElementById("cm_phone").innerText =
+      data.phone || "";
+
+    document.getElementById("cm_gender").innerText =
+      data.gender || "";
+
+    const img = document.getElementById("cm_passport");
+
+    let raw = String(data.passport || "").trim();
+    let fileId = "";
+
+    if (raw) {
+      const match = raw.match(/[-\w]{25,}/);
+      fileId = match ? match[0] : raw;
+    }
+
+    img.src = fileId
+      ? "https://drive.google.com/thumbnail?id=" + fileId + "&sz=w400"
+      : "https://via.placeholder.com/150";
+
+    img.onerror = function () {
+      this.src = "https://via.placeholder.com/150";
+    };
+
+     } catch (e) {
+    document.getElementById("status").innerText =
+      "ERROR: " + e.message;
+  }
+}
+
+function applyRoleLock(){
+console.log("ROLE LOCK ACTIVE:", getSessionRole());
+const role = (getSessionRole() || "").toLowerCase();
+
+  const isDrill = role.includes("drill") || role.includes("di");
+  const isMow = role.includes("mow");
+
+  for (let i = 0; i < 8; i++) {
+
+  const di = document.getElementById("di_" + i);
+  const mow = document.getElementById("mow_" + i);
+
+  if (!di || !mow) continue;
+
+  di.disabled = false;
+  mow.disabled = false;
+  di.style.opacity = "1";
+  mow.style.opacity = "1";
+
+  if (isDrill) {
+    mow.disabled = true;
+    mow.style.opacity = "0.4";
+  }
+
+  if (isMow) {
+    di.disabled = true;
+    di.style.opacity = "0.4";
+  }
+}
+
+  // OPTIONAL: also visually hide headers
+  document.getElementById("diHeader").style.opacity = isMow ? "0.4" : "1";
+  document.getElementById("mowHeader").style.opacity = isDrill ? "0.4" : "1";
+}
+
+function applyRoleRestrictions() {
+
+  const role = (getSessionRole() || "").toLowerCase();
+
+  const diFields = document.querySelectorAll("[id^='di_']");
+  const mowFields = document.querySelectorAll("[id^='mow_']");
+
+  // reset first (important when switching members)
+  diFields.forEach(x => {
+    x.disabled = false;
+    x.style.background = "";
+  });
+
+  mowFields.forEach(x => {
+    x.disabled = false;
+    x.style.background = "";
+  });
+
+  if (role.includes("drill")) {
+
+    mowFields.forEach(x => {
+      x.disabled = true;
+      x.style.background = "#eee";
+    });
+
+  } 
+  else if (role.includes("man") || role.includes("mow") || role.includes("war")) {
+
+    diFields.forEach(x => {
+      x.disabled = true;
+      x.style.background = "#eee";
+    });
+
+  }
+}
+function safeStateText(state) {
+  const map = {
+    AB: "Abia State",
+    AD: "Adamawa State",
+    AK: "Akwa Ibom State",
+    AN: "Anambra State",
+    BA: "Bauchi State",
+    BN: "Benue State",
+    BO: "Borno State",
+    FC: "FCT Abuja",
+    CR: "Cross River State",
+    DT: "Delta State",
+    EB: "Ebonyi State",
+    ED: "Edo State",
+    EK: "Ekiti State",
+    EN: "Enugu State",
+    GM: "Gombe State",
+    IM: "Imo State",
+    JG: "Jigawa State",
+    KD: "Kaduna State",
+    KN: "Kano State",
+    KT: "Katsina State",
+    KB: "Kebbi State",
+    KG: "Kogi State",
+    KW: "Kwara State",
+    LA: "Lagos State",
+    NS: "Nasarawa State",
+    NG: "Niger State",
+    OG: "Ogun State",
+    OD: "Ondo State",
+    OS: "Osun State",
+    OY: "Oyo State",
+    PL: "Plateau State",
+    RV: "Rivers State",
+    SO: "Sokoto State",
+    TR: "Taraba State",
+    YB: "Yobe State",
+    ZM: "Zamfara State"
+  };
+
+  state = String(state || "")
+    .replace("NYSC", "")
+    .replace("STATE", "")
+    .trim()
+    .toUpperCase();
+
+  return map[state] || state;
+}
+</script>
+<script>
+(function () {
+
+  const yearSelect = document.getElementById("serviceYearSelect");
+
+  if (!yearSelect) return;
+
+  // clear just in case
+  yearSelect.innerHTML = "<option value=''>-- Select Service Year --</option>";
+
+  // populate years
+  for (let y = 2026; y <= 2040; y++) {
+    const opt = document.createElement("option");
+    opt.value = y;
+    opt.textContent = y;
+    yearSelect.appendChild(opt);
+  }
+
+})();
+</script>
+<script>
+// Disable right-click
+document.addEventListener("contextmenu", function(e) {
+    e.preventDefault();
+});
+
+// Disable common developer shortcuts
+document.addEventListener("keydown", function(e) {
+
+    // F12
+    if (e.key === "F12") {
+        e.preventDefault();
+        return false;
+    }
+
+    // Ctrl+Shift+I
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "i") {
+        e.preventDefault();
+        return false;
+    }
+
+    // Ctrl+Shift+J
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "j") {
+        e.preventDefault();
+        return false;
+    }
+
+    // Ctrl+Shift+C
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "c") {
+        e.preventDefault();
+        return false;
+    }
+
+    // Ctrl+U (View Source)
+    if (e.ctrlKey && e.key.toLowerCase() === "u") {
+        e.preventDefault();
+        return false;
+    }
+
+});
+</script>
+</body>
+</html>
