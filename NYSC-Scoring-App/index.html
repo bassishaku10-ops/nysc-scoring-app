@@ -1099,6 +1099,7 @@ function getY(e){
 
 /* ================= LOGIN ================= */
 function login() {
+
 const batchStream = document.getElementById("batchStream").value;
 
 if (!batchStream) {
@@ -1108,16 +1109,16 @@ if (!batchStream) {
 }
 
 sessionStorage.setItem("batchStream", batchStream);
-  const officerName = document.getElementById("officerName").value;
-  const username = document.getElementById("username").value;
-  const platoon = document.getElementById("platoon").value;
+
+const officerName = document.getElementById("officerName").value;
+const username = document.getElementById("username").value;
+const platoon = document.getElementById("platoon").value;
 
 const state = document.getElementById("state").value.trim();
 sessionStorage.setItem("state", state);
 
-  const signature = canvas.toDataURL("image/png");
+const signature = canvas.toDataURL("image/png");
 
-// check if canvas is actually empty
 const blankTest = document.createElement("canvas");
 blankTest.width = canvas.width;
 blankTest.height = canvas.height;
@@ -1130,19 +1131,19 @@ if (signature === blankSignature) {
   return;
 }
 
-  const blankCanvas = document.createElement("canvas");
-  blankCanvas.width = 300;
-  blankCanvas.height = 120;
+const blankCanvas = document.createElement("canvas");
+blankCanvas.width = 300;
+blankCanvas.height = 120;
 
-  if(signature === blankCanvas.toDataURL()){
-    document.getElementById("loginStatus").innerText =
-      "Please complete all Fields before Login.";
-    return;
-  }
+if (signature === blankCanvas.toDataURL()) {
+  document.getElementById("loginStatus").innerText =
+    "Please complete all Fields before Login.";
+  return;
+}
 
-  document.getElementById("loginStatus").innerText = "Logging in...";
+document.getElementById("loginStatus").innerText = "Logging in...";
 
-  fetch("https://script.google.com/macros/s/AKfycbwi-_8i7joa4NpHtha4bmycV8ORV_Bo_x4n6RU_3L0Oqe2eeROINHFJQyi7uKPXzfPs_Q/exec", {
+fetch("https://script.google.com/macros/s/AKfycbwi-_8i7joa4NpHtha4bmycV8ORV_Bo_x4n6RU_3L0Oqe2eeROINHFJQyi7uKPXzfPs_Q/exec", {
   method: "POST",
   body: JSON.stringify({
     action: "startSession",
@@ -1169,9 +1170,59 @@ if (signature === blankSignature) {
     return;
   }
 
-  /* PASTE EVERYTHING that was originally inside
-     withSuccessHandler(function(res){ ... })
-     HERE */
+  sessionStorage.setItem("officerName", officerName);
+  sessionStorage.setItem("username", username);
+  sessionStorage.setItem("platoon", platoon);
+  sessionStorage.setItem(
+    "serviceYear",
+    document.getElementById("serviceYearSelect").value
+  );
+  sessionStorage.setItem("signature", signature);
+
+  loadCommentsByRole(res.role);
+
+  sessionStorage.setItem(
+    "role",
+    (res.role || "").toLowerCase()
+  );
+
+  document.getElementById("loginBox").style.display = "none";
+  document.getElementById("scoringBox").style.display = "block";
+
+  buildTable();
+  setTimeout(buildTable, 100);
+
+  const role = (res.role || "").toLowerCase();
+
+  if(role.includes("drill")){
+    document.querySelectorAll("[id^='mow_']").forEach(x=>{
+      x.disabled = true;
+      x.style.background = "#eee";
+    });
+  }
+
+  if(role.includes("mow")){
+    document.querySelectorAll("[id^='di_']").forEach(x=>{
+      x.disabled = true;
+      x.style.background = "#eee";
+    });
+  }
+
+  loadNextMember();
+
+  const submitBtn =
+    document.querySelector("button[onclick='submitScore()']");
+
+  if(submitBtn){
+    submitBtn.disabled = false;
+    submitBtn.style.background = "#0b6623";
+    submitBtn.style.cursor = "pointer";
+    submitBtn.style.opacity = "1";
+  }
+
+  setTimeout(function(){
+    applyRoleLock();
+  }, 300);
 
 })
 .catch(function(err){
@@ -1182,8 +1233,8 @@ if (signature === blankSignature) {
     "Server error. Check Apps Script deployment.";
 
 });
-}
-function getState(){
+
+}function getState(){
   return sessionStorage.getItem("state");
 }
 /* ================= GET MEMBER ================= */
