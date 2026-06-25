@@ -878,47 +878,53 @@ document.getElementById("selectedStateDisplay").innerText =
   window._stateLocked = false;
 }, 8000);
 
-google.script.run
-  .withSuccessHandler(function(lock){
-clearTimeout(window._stateLoadingTimeout);
-    clearTimeout(stateTimeout);
+fetch("https://script.google.com/macros/s/AKfycbwi-_8i7joa4NpHtha4bmycV8ORV_Bo_x4n6RU_3L0Oqe2eeROINHFJQyi7uKPXzfPs_Q/exec", {
+  method: "POST",
+  body: JSON.stringify({
+    action: "getOfficerState",
+    username: username
+  })
+})
+.then(r => r.json())
+.then(function(lock){
 
-    console.log("getOfficerState returned:", lock);
+  clearTimeout(window._stateLoadingTimeout);
+  clearTimeout(stateTimeout);
 
-    // existing logic (UNCHANGED)
-    if(lock && lock.state && lock.state !== state){
+  console.log("getOfficerState returned:", lock);
 
-      const msg = document.getElementById("stateMessage");
+  if(lock && lock.state && lock.state !== state){
 
-      if(msg){
-        msg.style.display = "block";
-        msg.innerText =
-          "You are already logged in as " +
-          (lock.stateText || lock.state) +
-          " State. Kindly select the correct State of your Orientation Camp.";
-      }
+    const msg = document.getElementById("stateMessage");
 
-      window._stateLocked = false;
-      return;
+    if(msg){
+      msg.style.display = "block";
+      msg.innerText =
+        "You are already logged in as " +
+        (lock.stateText || lock.state) +
+        " State. Kindly select the correct State of your Orientation Camp.";
     }
 
-    proceedStateSave(state, stateText);
-
-  })
-  .withFailureHandler(function(err){
-clearTimeout(window._stateLoadingTimeout);
-    clearTimeout(stateTimeout);
-
-    console.log("getOfficerState FAILED:", err);
-
-    document.getElementById("stateStatus").innerText =
-      "Error loading session. Try again.";
-
     window._stateLocked = false;
+    return;
+  }
 
-  })
-  .getOfficerState(username);
+  proceedStateSave(state, stateText);
 
+})
+.catch(function(err){
+
+  clearTimeout(window._stateLoadingTimeout);
+  clearTimeout(stateTimeout);
+
+  console.log("getOfficerState FAILED:", err);
+
+  document.getElementById("stateStatus").innerText =
+    "Error loading session. Try again.";
+
+  window._stateLocked = false;
+
+});
 return;
 }
 
@@ -938,54 +944,49 @@ if (window._stateLocked) return;
 window._stateLocked = true;
 document.getElementById("stateStatus").innerText =
   "Preparing scoring page...";
-  google.script.run
-  .withSuccessHandler(function(res){
-
-    console.log("saveOfficerState response:", res);
-
-    if(!res || !res.success){
-      alert(res?.message || "Failed to save state");
-      window._stateLocked = false;
-      return;
-    }
-
-    sessionStorage.setItem("state", state);
-    sessionStorage.setItem("stateText", stateText);
-// 🔥 FORCE SAVE TO SERVER IMMEDIATELY (DO NOT WAIT FOR LOGIN)
-google.script.run
-  .withSuccessHandler(function(res){
-    console.log("State metadata saved early:", res);
+  fetch("https://script.google.com/macros/s/AKfycbwi-_8i7joa4NpHtha4bmycV8ORV_Bo_x4n6RU_3L0Oqe2eeROINHFJQyi7uKPXzfPs_Q/exec", {
+  method: "POST",
+  body: JSON.stringify({
+    action: "saveOfficerState",
+    username: sessionStorage.getItem("username"),
+    state: state,
+    stateText: stateText
   })
-  .saveOfficerState(
-    sessionStorage.getItem("username"),
-    state,
-    stateText
-  );
-    document.getElementById("stateStatus").innerText = "";
-    document.getElementById("stateBox").style.display = "none";
-    document.getElementById("scoringBox").style.display = "block";
+})
+.then(r => r.json())
+.then(function(res){
 
-    buildTable();
+  console.log("saveOfficerState response:", res);
 
-    setTimeout(() => {
-      loadNextMember();
-    }, 300);
-
-  })
-  .withFailureHandler(function(err){
-
-    console.log("saveOfficerState FAILED:", err);
-
-    alert("Server error saving state. Check backend.");
-
+  if(!res || !res.success){
+    alert(res?.message || "Failed to save state");
     window._stateLocked = false;
+    return;
+  }
 
-  })
-  .saveOfficerState(
-    sessionStorage.getItem("username"),
-    state,
-    stateText
-  );
+  sessionStorage.setItem("state", state);
+  sessionStorage.setItem("stateText", stateText);
+
+  document.getElementById("stateStatus").innerText = "";
+  document.getElementById("stateBox").style.display = "none";
+  document.getElementById("scoringBox").style.display = "block";
+
+  buildTable();
+
+  setTimeout(() => {
+    loadNextMember();
+  }, 300);
+
+})
+.catch(function(err){
+
+  console.log("saveOfficerState FAILED:", err);
+
+  alert("Server error saving state. Check backend.");
+
+  window._stateLocked = false;
+
+});
   }
 
 function buildTable(){
@@ -1403,56 +1404,65 @@ console.log("STEP 3: building payload");
 document.getElementById("submitStatus").style.color = "#0b6623";
 console.log("STEP 4: sending to Apps Script");
   google.script.run
-    .withSuccessHandler(function(res) {
+    fetch("https://script.google.com/macros/s/AKfycbwi-_8i7joa4NpHtha4bmycV8ORV_Bo_x4n6RU_3L0Oqe2eeROINHFJQyi7uKPXzfPs_Q/exec", {
+  method: "POST",
+  body: JSON.stringify({
+    action: "saveSimpleScore",
+    payload: payload
+  })
+})
+.then(r => r.json())
+.then(function(res){
 
-      if (!res || !res.success) {
-        document.getElementById("status").innerText =
-          res?.message || "Save failed";
-        return;
-      }
+  if (!res || !res.success) {
+    document.getElementById("status").innerText =
+      res?.message || "Save failed";
+    return;
+  }
 
-      if (!res || res.noMore) {
-  document.getElementById("submitStatus").innerText = "";
-  return;
-}
+  if (!res || res.noMore) {
+    document.getElementById("submitStatus").innerText = "";
+    return;
+  }
 
-document.getElementById("submitStatus").innerText =
-  "Scores submitted successfully.";
+  document.getElementById("submitStatus").innerText =
+    "Scores submitted successfully.";
 
-      document.getElementById("status").style.display = "block";
-document.getElementById("status").innerText =
-  "Loading next candidate for scoring...";
+  document.getElementById("status").style.display = "block";
+  document.getElementById("status").innerText =
+    "Loading next candidate for scoring...";
 
-      setTimeout(function () {
+  setTimeout(function () {
 
-        for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 8; i++) {
 
-          const diEl = document.getElementById("di_" + i);
-          const mowEl = document.getElementById("mow_" + i);
+      const diEl = document.getElementById("di_" + i);
+      const mowEl = document.getElementById("mow_" + i);
 
-          if (diEl) diEl.value = "";
-          if (mowEl) mowEl.value = "";
-        }
+      if (diEl) diEl.value = "";
+      if (mowEl) mowEl.value = "";
+    }
 
-        document.getElementById("total").innerText = "0";
-        const commentBox = document.getElementById("commentSelect");
-if (commentBox) {
-  commentBox.selectedIndex = 0;
-}
-        loadNextMember();
+    document.getElementById("total").innerText = "0";
 
-     }, 1000);
+    const commentBox = document.getElementById("commentSelect");
+    if (commentBox) {
+      commentBox.selectedIndex = 0;
+    }
 
-    })
-    .withFailureHandler(function(err) {
+    loadNextMember();
 
-      console.log(err);
+  }, 1000);
 
-      document.getElementById("status").innerText =
-        "Server error while saving score";
+})
+.catch(function(err){
 
-    })
-    .saveSimpleScore(payload);
+  console.log(err);
+
+  document.getElementById("status").innerText =
+    "Server error while saving score";
+
+});
 }
 function showNoMoreCandidates() {
 
