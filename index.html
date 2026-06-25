@@ -1096,7 +1096,32 @@ function getY(e){
   const touch = e.touches ? e.touches[0] : e;
   return (touch.clientY - rect.top);
 }
+function loadCommentsByRole(role){
+  const select = document.getElementById("commentSelect");
+  if(!select) return;
 
+  select.innerHTML = "";
+
+  role = (role || getSessionRole() || "")
+    .toLowerCase()
+    .trim();
+
+  let list;
+
+  if (role.includes("mow") || role.includes("man")) {
+    list = MOW_COMMENTS;
+  } 
+  else {
+    list = DI_COMMENTS;
+  }
+
+  list.forEach(c => {
+    const option = document.createElement("option");
+    option.value = c;
+    option.textContent = c;
+    select.appendChild(option);
+  });
+}
 /* ================= LOGIN ================= */
 function login() {
 const batchStream = document.getElementById("batchStream").value;
