@@ -1216,7 +1216,7 @@ if (signature === blankSignature) {
 .catch(function(err){
 
   document.getElementById("loginStatus").innerText =
-    "Login failed";
+    "Login failed: " + err;
 
   console.log(err);
 
